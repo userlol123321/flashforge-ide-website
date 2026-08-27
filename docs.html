@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentation — Flashforge IDE</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg2:#12121a;--accent:#f7931e;--accent2:#ff6b00;--cyan:#4fc3f7;--text:#e0e0e0;--text2:#a0a0b0;--text3:#606070;--glass:rgba(255,255,255,0.03);--glass2:rgba(255,255,255,0.06);--border:rgba(255,255,255,0.08)}
+html{scroll-behavior:smooth}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.8;min-height:100vh}
+::selection{background:var(--accent);color:#000}::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+nav{padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,15,0.9);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}.nav-logo svg{width:28px;height:28px}.nav-logo span{font-size:1.1rem;font-weight:700;color:#fff}.nav-logo .ide{color:var(--accent)}
+.nav-links{display:flex;gap:1.5rem;align-items:center}.nav-links a{color:var(--text2);text-decoration:none;font-size:.85rem;transition:color .2s}.nav-links a:hover{color:var(--accent)}
+.layout{display:flex;max-width:1200px;margin:0 auto;min-height:calc(100vh - 60px)}
+.sidebar{width:260px;padding:2rem 1.5rem;border-right:1px solid var(--border);position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;flex-shrink:0}
+.sidebar h3{font-size:.7rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);margin:1.5rem 0 .5rem;font-weight:600}
+.sidebar a{display:block;padding:.4rem .8rem;color:var(--text2);text-decoration:none;font-size:.85rem;border-radius:6px;transition:all .2s;margin-bottom:2px}
+.sidebar a:hover,.sidebar a.active{background:var(--glass2);color:var(--accent)}
+.content{flex:1;padding:3rem 3rem;max-width:800px}
+h1{font-size:2.2rem;font-weight:900;letter-spacing:-1px;margin-bottom:.5rem}
+h1 .gradient{background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:var(--text2);margin-bottom:3rem}
+h2{font-size:1.4rem;font-weight:700;margin:3rem 0 1rem;color:#fff;padding-top:1rem;border-top:1px solid var(--border)}
+h2:first-of-type{border:none;padding:0}
+h3{font-size:1.1rem;font-weight:600;margin:2rem 0 .6rem;color:#fff}
+p{color:var(--text2);font-size:.95rem;margin-bottom:1rem}
+ul,ol{color:var(--text2);font-size:.95rem;margin:.5rem 0 1.5rem 1.5rem}ul li,ol li{margin-bottom:.5rem}
+code{background:var(--glass2);padding:.15rem .5rem;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--cyan)}
+pre{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:1.2rem;overflow-x:auto;margin:1rem 0;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.6;color:var(--text2)}
+pre code{background:none;padding:0}
+a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+.card{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin:1rem 0}
+.card h4{font-weight:600;margin-bottom:.5rem;color:#fff}
+.badge{display:inline-block;padding:.2rem .6rem;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;border-radius:100px;font-size:.7rem;font-weight:700;letter-spacing:.5px;margin-left:.5rem}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center}
+.footer-links{display:flex;gap:2rem;justify-content:center;margin-bottom:1rem;flex-wrap:wrap}.footer-links a{color:var(--text3);text-decoration:none;font-size:.8rem;transition:color .2s}.footer-links a:hover{color:var(--accent)}
+.footer-copy{color:var(--text3);font-size:.75rem}.footer-dev{margin-top:.5rem;color:var(--text3);font-size:.75rem}.footer-dev a{color:var(--cyan);text-decoration:none}
+@media(max-width:900px){.sidebar{display:none}.content{padding:2rem 1.5rem}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 512 512" fill="none"><rect x="16" y="16" width="480" height="480" rx="96" fill="#1a1a2e"/><path d="M160 160L100 256L160 352" stroke="#4fc3f7" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><path d="M352 160L412 256L352 352" stroke="#4fc3f7" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><path d="M270 90L190 260H248L220 422L340 230H272Z" fill="#f7931e"/></svg>
+    <span>Flashforge <span class="ide">IDE</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="docs.html">Documentation</a>
+    <a href="support.html">Support</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+  </div>
+</nav>
+
+<div class="layout">
+  <div class="sidebar">
+    <h3>Getting Started</h3>
+    <a href="#installation">Installation</a>
+    <a href="#first-launch">First Launch</a>
+    <a href="#login">Login & Roles</a>
+    <h3>Features</h3>
+    <a href="#ai-chat">AI Chat</a>
+    <a href="#models">Models Marketplace</a>
+    <a href="#skills">Skills Marketplace</a>
+    <a href="#flash-mode">Flash Mode</a>
+    <h3>For Institutions</h3>
+    <a href="#institution-setup">Institution Setup</a>
+    <a href="#faculty">Faculty Provisioning</a>
+    <a href="#assignments">Assignments</a>
+    <a href="#anti-cheat">Anti-Cheat</a>
+    <a href="#billing">Billing</a>
+    <h3>For Students</h3>
+    <a href="#student-guide">Student Guide</a>
+    <a href="#submitting">Submitting Work</a>
+    <h3>Reference</h3>
+    <a href="#system-req">System Requirements</a>
+    <a href="#faq">FAQ</a>
+    <a href="#changelog">Changelog</a>
+  </div>
+
+  <div class="content">
+    <h1>Flashforge IDE <span class="gradient">Documentation</span></h1>
+    <p class="subtitle">Everything you need to install, configure, and use Flashforge IDE.</p>
+
+    <!-- INSTALLATION -->
+    <h2 id="installation">Installation</h2>
+    <h3>System Requirements</h3>
+    <ul>
+      <li><strong>OS:</strong> Windows 10/11 (64-bit)</li>
+      <li><strong>RAM:</strong> 4 GB minimum, 8 GB recommended</li>
+      <li><strong>Storage:</strong> 200 MB for IDE + workspace space</li>
+      <li><strong>Internet:</strong> Required for online AI models and billing (optional for offline use)</li>
+    </ul>
+    <h3>Install Steps</h3>
+    <ol>
+      <li>Download <code>Flashforge-IDE-Setup-1.0.0.exe</code> from the website.</li>
+      <li>Run the installer → Follow the setup wizard.</li>
+      <li>Choose installation directory (default: <code>C:\Program Files\Flashforge IDE</code>).</li>
+      <li>Optionally create a Desktop shortcut.</li>
+      <li>Click "Install" → Wait for extraction → Click "Finish".</li>
+    </ol>
+
+    <!-- FIRST LAUNCH -->
+    <h2 id="first-launch">First Launch</h2>
+    <p>On first launch, Flashforge IDE will:</p>
+    <ol>
+      <li>Display the login screen ("Welcome to Flashforge IDE").</li>
+      <li>Register as an Institution (Admin) or login with credentials provided by your institution.</li>
+      <li>Configure your AI model (Ollama for offline, or add your Gemini/OpenAI API key).</li>
+      <li>The activity bar will show 4 custom icons: Dashboard, AI Chat, Models, Skills.</li>
+    </ol>
+
+    <!-- LOGIN & ROLES -->
+    <h2 id="login">Login & Roles</h2>
+    <p>Flashforge IDE supports 4 roles with different dashboards:</p>
+    <div class="card">
+      <h4>SuperAdmin <span class="badge">SYSTEM</span></h4>
+      <p>Full system access. Manages all institutions, subscriptions, and system-wide settings.</p>
+      <p><strong>Login:</strong> Use credentials provided by your system administrator.</p>
+    </div>
+    <div class="card">
+      <h4>Admin (Institution) <span class="badge">INSTITUTION</span></h4>
+      <p>Manages faculty, students, billing, and assignments for their institution.</p>
+    </div>
+    <div class="card">
+      <h4>Faculty <span class="badge">FACULTY</span></h4>
+      <p>Creates assignments, views submissions, grades students, exports anti-cheat reports.</p>
+    </div>
+    <div class="card">
+      <h4>Student <span class="badge">STUDENT</span></h4>
+      <p>Views assignments, writes code, submits work, monitors anti-cheat scores, receives grades.</p>
+    </div>
+
+    <!-- AI CHAT -->
+    <h2 id="ai-chat">AI Chat <span class="badge">FREE</span></h2>
+    <p>Open via the activity bar (chat icon). The AI Chat harness supports:</p>
+    <ul>
+      <li><strong>File Operations:</strong> Read, write, edit files from chat</li>
+      <li><strong>Terminal:</strong> Run commands directly from chat</li>
+      <li><strong>Search:</strong> Find files, grep code, search web</li>
+      <li><strong>Scaffold:</strong> Generate project structures and boilerplate</li>
+      <li><strong>Debug:</strong> Analyze errors and suggest fixes</li>
+      <li><strong>Test:</strong> Generate and run test cases</li>
+      <li><strong>Refactor:</strong> Improve code quality and structure</li>
+    </ul>
+    <h3>API Key Configuration</h3>
+    <p>Open Models marketplace → Add your API key → Select model. Your key is stored locally and never sent to our servers.</p>
+    <pre><code>Ollama (Local):   No API key needed — runs on your machine
+Gemini:           Get free key at https://aistudio.google.com
+OpenAI:           Get key at https://platform.openai.com</code></pre>
+
+    <!-- MODELS MARKETPLACE -->
+    <h2 id="models">Models Marketplace <span class="badge">FREE</span></h2>
+    <p>Switch between AI providers:</p>
+    <ul>
+      <li><strong>Ollama:</strong> Local, private, free. Install Ollama from <a href="https://ollama.ai" target="_blank">ollama.ai</a></li>
+      <li><strong>Google Gemini:</strong> Free tier available. Add your API key.</li>
+      <li><strong>OpenAI GPT:</strong> Pay-per-use. Add your API key.</li>
+    </ul>
+    <p>Real-time model status, usage stats, and benchmarks are displayed in the Models panel.</p>
+
+    <!-- SKILLS MARKETPLACE -->
+    <h2 id="skills">Skills Marketplace <span class="badge">FREE</span></h2>
+    <p>80+ pre-built skills across 8 categories:</p>
+    <ul>
+      <li><strong>Code Generation:</strong> React, Next.js, Express, GraphQL, REST APIs</li>
+      <li><strong>Debugging:</strong> Error analysis, memory leak detection, profiling</li>
+      <li><strong>Testing:</strong> Unit, integration, E2E, load testing</li>
+      <li><strong>DevOps:</strong> Docker, CI/CD, GitHub Actions, deployment</li>
+      <li><strong>Database:</strong> SQL optimization, migration scripts, schema design</li>
+      <li><strong>Security:</strong> OWASP audit, dependency scanning, penetration testing</li>
+      <li><strong>Documentation:</strong> API docs, README generation, code comments</li>
+      <li><strong>UI/UX:</strong> Component generation, accessibility, responsive design</li>
+    </ul>
+
+    <!-- FLASH MODE -->
+    <h2 id="flash-mode">Flash Mode <span class="badge">FREE</span></h2>
+    <p>AI agent that persists progress across sessions using <code>.reference/</code> folders:</p>
+    <ul>
+      <li><code>.reference/progress.md</code> — Session-by-session progress log</li>
+      <li><code>.reference/todo.md</code> — Current task list</li>
+      <li><code>.reference/phases.md</code> — Development phase tracking</li>
+      <li><code>.reference/requirements.md</code> — Project requirements</li>
+      <li><code>.reference/unique.id</code> — Project identifier</li>
+    </ul>
+    <p>Chat history is saved to <code>~/.flashforge-ide/chat-history/</code> and restored on reactivation.</p>
+
+    <!-- INSTITUTION SETUP -->
+    <h2 id="institution-setup">Institution Setup</h2>
+    <ol>
+      <li>Install Flashforge IDE → Click "Register Institution".</li>
+      <li>Fill in: Institution name, admin email, password.</li>
+      <li>Pay ₹5,000/month via Razorpay (inside the IDE).</li>
+      <li>Faculty provisioning → Upload CSV with email,name,roll columns.</li>
+      <li>Students login with credentials provided by your institution.</li>
+    </ol>
+
+    <!-- FACULTY -->
+    <h2 id="faculty">Faculty Provisioning</h2>
+    <p>Admin → Upload CSV (format):</p>
+    <pre><code>email,name,roll
+prof.smith@university.edu,Dr. Smith,CS001
+prof.jones@university.edu,Dr. Jones,CS002</code></pre>
+    <p>Default password: <code>Faculty@123</code> (or 4th column in CSV for custom passwords).</p>
+
+    <!-- ASSIGNMENTS -->
+    <h2 id="assignments">Assignments</h2>
+    <h3>Faculty Creates Assignment</h3>
+    <ul>
+      <li>Title, description, required language (Python/JS/Java/etc.)</li>
+      <li>Test cases: input → expected output</li>
+      <li>Deadline (datetime picker)</li>
+      <li>Anti-cheat threshold (0-100%)</li>
+    </ul>
+    <h3>Student Submits</h3>
+    <ul>
+      <li>Write code in editor → Click "Submit from Editor"</li>
+      <li>IDE auto-runs test cases against submission</li>
+      <li>Shows pass/fail per test case</li>
+      <li>Anti-cheat score calculated (AI watermark + copy-paste detection)</li>
+    </ul>
+
+    <!-- ANTI-CHEAT -->
+    <h2 id="anti-cheat">Anti-Cheat Detection</h2>
+    <ul>
+      <li><strong>AI Watermark Detection:</strong> Detects patterns typical of AI-generated code</li>
+      <li><strong>Copy-Paste Monitoring:</strong> Flags submissions copied from external sources</li>
+      <li><strong>Behavioral Analysis:</strong> Tracks typing patterns and submission timing</li>
+      <li><strong>CSV Export:</strong> After deadline, faculty exports full report with student details, scores, and anti-cheat metrics</li>
+    </ul>
+
+    <!-- BILLING -->
+    <h2 id="billing">Billing</h2>
+    <p>Payment via Razorpay (inside the IDE):</p>
+    <ul>
+      <li><strong>Free Plan:</strong> ₹0 — All features for individuals</li>
+      <li><strong>Institutional Plan:</strong> ₹5,000/month — Multi-user management + admin tools</li>
+      <li>Auto-renews monthly. Cancel anytime.</li>
+      <li>Payment verification happens server-side (HMAC signature).</li>
+    </ul>
+
+    <!-- STUDENT GUIDE -->
+    <h2 id="student-guide">Student Guide</h2>
+    <ol>
+      <li>Download and install Flashforge IDE.</li>
+      <li>Login with credentials from your institution.</li>
+      <li>Configure your AI API key (or use Ollama for free).</li>
+      <li>View assignments in Dashboard → Complete → Submit.</li>
+      <li>Check grades and feedback in Dashboard.</li>
+    </ol>
+
+    <!-- SUBMITTING -->
+    <h2 id="submitting">Submitting Work</h2>
+    <ol>
+      <li>Open the assignment in Dashboard.</li>
+      <li>Write your solution in the editor.</li>
+      <li>Click "Run Tests" to verify before submitting.</li>
+      <li>Click "Submit from Editor" to submit.</li>
+      <li>View test results and anti-cheat score immediately.</li>
+    </ol>
+
+    <!-- SYSTEM REQUIREMENTS -->
+    <h2 id="system-req">System Requirements</h2>
+    <pre><code>OS:        Windows 10/11 (64-bit)
+RAM:       4 GB min, 8 GB recommended
+Storage:   200 MB + workspace space
+GPU:       Optional (for Ollama local models)
+Internet:  Optional (required for online AI + billing)</code></pre>
+
+    <!-- FAQ -->
+    <h2 id="faq">FAQ</h2>
+    <div class="card">
+      <h4>Is Flashforge IDE free?</h4>
+      <p>Yes! 100% free for all individuals. Only institutions pay ₹5,000/month for multi-user management.</p>
+    </div>
+    <div class="card">
+      <h4>Can I use it offline?</h4>
+      <p>Yes. Install Ollama for offline AI chat. All other features (editor, terminal, assignments) work offline.</p>
+    </div>
+    <div class="card">
+      <h4>Does it work on Mac/Linux?</h4>
+      <p>Currently Windows only. Mac and Linux support is planned.</p>
+    </div>
+
+    <!-- CHANGELOG -->
+    <h2 id="changelog">Changelog</h2>
+    <div class="card">
+      <h4>v1.0.0 — August 27, 2026</h4>
+      <ul>
+        <li>Initial release</li>
+        <li>AI Chat harness with Ollama/Gemini/OpenAI</li>
+        <li>80+ Skills marketplace</li>
+        <li>Role-based dashboards (SuperAdmin/Admin/Faculty/Student)</li>
+        <li>Assignment system with test cases</li>
+        <li>Anti-cheat detection (AI watermark + copy-paste)</li>
+        <li>Flash Mode with session persistence</li>
+        <li>Razorpay billing integration</li>
+        <li>Full VS Code 1.96 base</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="docs.html">Documentation</a>
+    <a href="https://github.com/userlol123321" target="_blank">GitHub</a>
+    <a href="support.html">Support</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Flashforge. Built with ⚡ for education.</div>
+  <div class="footer-dev">Developed by <a href="https://github.com/userlol123321" target="_blank">userlol123321</a></div>
+</footer>
+</body>
+</html>

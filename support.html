@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Support — Flashforge IDE</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg2:#12121a;--accent:#f7931e;--accent2:#ff6b00;--cyan:#4fc3f7;--text:#e0e0e0;--text2:#a0a0b0;--text3:#606070;--glass:rgba(255,255,255,0.03);--glass2:rgba(255,255,255,0.06);--border:rgba(255,255,255,0.08)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+::selection{background:var(--accent);color:#000}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+nav{padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,15,0.9);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px)}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}.nav-logo svg{width:28px;height:28px}.nav-logo span{font-size:1.1rem;font-weight:700;color:#fff}.nav-logo .ide{color:var(--accent)}
+.nav-links{display:flex;gap:1.5rem;align-items:center}.nav-links a{color:var(--text2);text-decoration:none;font-size:.85rem;transition:color .2s}.nav-links a:hover{color:var(--accent)}
+.container{max-width:900px;margin:0 auto;padding:4rem 2rem}
+h1{font-size:2.5rem;font-weight:900;letter-spacing:-1px;margin-bottom:1rem}
+h1 .gradient{background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:var(--text2);font-size:1.1rem;margin-bottom:3rem}
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-bottom:3rem}
+.contact-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:all .3s}
+.contact-card:hover{border-color:rgba(79,195,247,.3);transform:translateY(-3px)}
+.contact-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1rem;background:linear-gradient(135deg,rgba(247,147,30,.15),rgba(79,195,247,.1))}
+.contact-card h3{font-size:1.1rem;font-weight:700;margin-bottom:.3rem}
+.contact-card p{color:var(--text2);font-size:.9rem;margin-bottom:.8rem}
+.contact-card a{color:var(--cyan);text-decoration:none;font-weight:500;transition:color .2s}.contact-card a:hover{color:var(--accent)}
+.faq{margin-top:2rem}
+.faq h2{font-size:1.8rem;font-weight:800;margin-bottom:1.5rem;letter-spacing:-.5px}
+.faq-item{background:var(--glass);border:1px solid var(--border);border-radius:12px;margin-bottom:.8rem;overflow:hidden}
+.faq-q{padding:1.2rem 1.5rem;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;transition:background .2s}
+.faq-q:hover{background:var(--glass2)}
+.faq-q::after{content:'+';font-size:1.3rem;color:var(--accent);transition:transform .3s}
+.faq-item.open .faq-q::after{transform:rotate(45deg)}
+.faq-a{padding:0 1.5rem;max-height:0;overflow:hidden;transition:all .3s;color:var(--text2);font-size:.9rem;line-height:1.7}
+.faq-item.open .faq-a{padding:0 1.5rem 1.2rem;max-height:300px}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;margin-top:4rem}
+.footer-links{display:flex;gap:2rem;justify-content:center;margin-bottom:1rem;flex-wrap:wrap}.footer-links a{color:var(--text3);text-decoration:none;font-size:.8rem;transition:color .2s}.footer-links a:hover{color:var(--accent)}
+.footer-copy{color:var(--text3);font-size:.75rem}
+.footer-dev{margin-top:.5rem;color:var(--text3);font-size:.75rem}.footer-dev a{color:var(--cyan);text-decoration:none}
+@media(max-width:768px){.nav-links{display:none}h1{font-size:2rem}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">
+    <svg viewBox="0 0 512 512" fill="none"><rect x="16" y="16" width="480" height="480" rx="96" fill="#1a1a2e"/><path d="M160 160L100 256L160 352" stroke="#4fc3f7" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><path d="M352 160L412 256L352 352" stroke="#4fc3f7" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><path d="M270 90L190 260H248L220 422L340 230H272Z" fill="#f7931e"/></svg>
+    <span>Flashforge <span class="ide">IDE</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html">Home</a>
+    <a href="docs.html">Documentation</a>
+    <a href="support.html">Support</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+  </div>
+</nav>
+
+<div class="container">
+  <h1>Get <span class="gradient">Support</span></h1>
+  <p class="subtitle">Need help with Flashforge IDE? We're here for you.</p>
+
+  <div class="contact-grid">
+    <div class="contact-card">
+      <div class="contact-icon">📧</div>
+      <h3>Email Support</h3>
+      <p>For bugs, feature requests, or general inquiries. We respond within 24 hours.</p>
+      <a href="mailto:royishaan00@gmail.com">royishaan00@gmail.com</a>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">📱</div>
+      <h3>Phone / WhatsApp</h3>
+      <p>For urgent issues, institutional setup, or payment support. Available 10 AM – 8 PM IST.</p>
+      <a href="tel:+919163606002">+91 9163606002</a>
+    </div>
+    <div class="contact-card">
+      <div class="contact-icon">🐙</div>
+      <h3>GitHub Issues</h3>
+      <p>Report bugs, request features, or contribute to the project on GitHub.</p>
+      <a href="https://github.com/userlol123321" target="_blank">github.com/userlol123321</a>
+    </div>
+  </div>
+
+  <div class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Is Flashforge IDE really free?</div>
+      <div class="faq-a">Yes! Flashforge IDE is completely free for all individual users and students. Only institutions pay ₹5,000/month for multi-user management, faculty provisioning, and admin dashboards.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I configure my own API key?</div>
+      <div class="faq-a">Open Flashforge IDE → Go to Models marketplace → Add your Gemini or OpenAI API key → The AI Chat will use your personal key. You can also use Ollama for completely free local models with no API key needed.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">What are the system requirements?</div>
+      <div class="faq-a">Windows 10/11 (64-bit), 4 GB RAM minimum (8 GB recommended), 200 MB disk space. For Ollama local models, 8 GB+ RAM recommended.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">How do I install Flashforge IDE?</div>
+      <div class="faq-a">Download the installer from this website → Run Flashforge-IDE-Setup-1.0.0.exe → Follow the setup wizard → Launch and login with your credentials. Takes about 2 minutes.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">I'm an institution. How do I subscribe?</div>
+      <div class="faq-a">Install Flashforge IDE → Click "Register Institution" on the login screen → Fill in your details → Pay ₹5,000/month via Razorpay inside the IDE → Provision faculty via CSV upload → Done!</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Can I use Flashforge IDE offline?</div>
+      <div class="faq-a">Yes! Install Ollama for offline AI chat. All other features (editor, terminal, assignments, skills) work without internet. Online models (Gemini/OpenAI) require internet.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q" onclick="this.parentElement.classList.toggle('open')">Does it work on Mac or Linux?</div>
+      <div class="faq-a">Currently only Windows (x64) is supported. Mac and Linux support is planned for future releases.</div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <a href="docs.html">Documentation</a>
+    <a href="https://github.com/userlol123321" target="_blank">GitHub</a>
+    <a href="support.html">Support</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Flashforge. Built with ⚡ for education.</div>
+  <div class="footer-dev">Developed by <a href="https://github.com/userlol123321" target="_blank">userlol123321</a></div>
+</footer>
+</body>
+</html>

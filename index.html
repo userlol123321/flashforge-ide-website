@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashforge IDE — AI-Powered Coding Platform</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;--accent:#f7931e;--accent2:#ff6b00;--accent3:#ffaa00;--cyan:#4fc3f7;--cyan2:#00bcd4;--text:#e0e0e0;--text2:#a0a0b0;--text3:#606070;--glass:rgba(255,255,255,0.03);--glass2:rgba(255,255,255,0.06);--border:rgba(255,255,255,0.08);--border2:rgba(79,195,247,0.2);--glow:0 0 40px rgba(247,147,30,0.15);--glow-cyan:0 0 40px rgba(79,195,247,0.15)}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden;line-height:1.6}
+::selection{background:var(--accent);color:#000}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+.cursor-glow{position:fixed;width:300px;height:300px;border-radius:50%;pointer-events:none;z-index:9999;background:radial-gradient(circle,rgba(247,147,30,0.06) 0%,transparent 70%);transform:translate(-50%,-50%);transition:left .15s,top .15s}
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,15,0.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:all .3s}
+nav.scrolled{padding:.6rem 2rem;background:rgba(10,10,15,0.95)}
+.nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}.nav-logo svg{width:32px;height:32px}.nav-logo span{font-size:1.2rem;font-weight:700;color:#fff;letter-spacing:-.5px}.nav-logo .ide{color:var(--accent);font-weight:800}
+.nav-links{display:flex;gap:2rem;align-items:center}.nav-links a{color:var(--text2);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s}.nav-links a:hover{color:var(--accent)}
+.nav-cta{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000!important;padding:.6rem 1.4rem;border-radius:8px;font-weight:600!important;transition:transform .2s,box-shadow .2s}.nav-cta:hover{transform:translateY(-2px);box-shadow:var(--glow)}
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:6rem 2rem 4rem}
+.hero-bg{position:absolute;inset:0;z-index:0}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(79,195,247,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(79,195,247,.03) 1px,transparent 1px);background-size:60px 60px;animation:gridMove 20s linear infinite}
+@keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(60px,60px)}}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);animation:orbFloat 8s ease-in-out infinite}
+.hero-orb.o1{width:400px;height:400px;background:rgba(247,147,30,.08);top:10%;left:20%;animation-delay:0s}
+.hero-orb.o2{width:300px;height:300px;background:rgba(79,195,247,.06);bottom:20%;right:15%;animation-delay:3s}
+.hero-orb.o3{width:200px;height:200px;background:rgba(255,107,0,.05);top:50%;left:60%;animation-delay:5s}
+@keyframes orbFloat{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-30px) scale(1.1)}}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:900px}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.4rem 1rem;background:var(--glass2);border:1px solid var(--border);border-radius:100px;font-size:.8rem;color:var(--text2);margin-bottom:2rem;animation:fadeUp .8s ease-out}
+.hero-badge .dot{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:900;line-height:1.1;letter-spacing:-2px;margin-bottom:1.5rem;animation:fadeUp .8s ease-out .1s both}
+.hero h1 .gradient{background:linear-gradient(135deg,var(--accent),var(--accent3),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:1.2rem;color:var(--text2);max-width:600px;margin:0 auto 2.5rem;animation:fadeUp .8s ease-out .2s both}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s ease-out .3s both}
+.btn{padding:.8rem 2rem;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:all .3s;display:inline-flex;align-items:center;gap:.5rem}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;box-shadow:0 4px 20px rgba(247,147,30,.3)}.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 30px rgba(247,147,30,.4)}
+.btn-secondary{background:var(--glass2);color:#fff;border:1px solid var(--border)}.btn-secondary:hover{transform:translateY(-3px);border-color:var(--accent);background:var(--glass)}
+.hero-3d{margin-top:4rem;perspective:1200px;animation:fadeUp 1s ease-out .5s both}
+.ide-window{width:100%;max-width:800px;margin:0 auto;background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;transform:rotateX(5deg) rotateY(-2deg);transition:transform .6s cubic-bezier(.23,1,.32,1);box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.05) inset}
+.ide-window:hover{transform:rotateX(0deg) rotateY(0deg)}
+.ide-titlebar{display:flex;align-items:center;gap:.5rem;padding:.8rem 1rem;background:rgba(0,0,0,.3);border-bottom:1px solid var(--border)}
+.ide-dot{width:10px;height:10px;border-radius:50%}.ide-dot.r{background:#ff5f57}.ide-dot.y{background:#febc2e}.ide-dot.g{background:#28c840}
+.ide-titlebar span{margin-left:auto;font-size:.75rem;color:var(--text3);font-family:'JetBrains Mono',monospace}
+.ide-body{display:flex;min-height:300px}
+.ide-sidebar{width:48px;background:rgba(0,0,0,.2);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding:.5rem 0;gap:1rem}
+.ide-sidebar .icon{width:24px;height:24px;border-radius:4px;opacity:.4;transition:opacity .2s}.ide-sidebar .icon.active{opacity:1;background:var(--accent)}
+.ide-editor{flex:1;padding:1rem;font-family:'JetBrains Mono',monospace;font-size:.8rem;line-height:1.8}
+.ide-editor .line{display:flex;gap:1rem}.ide-editor .ln{color:var(--text3);min-width:20px;text-align:right;user-select:none}
+.ide-editor .kw{color:#c792ea}.ide-editor .fn{color:#82aaff}.ide-editor .str{color:#c3e88d}.ide-editor .cm{color:#546e7a;font-style:italic}.ide-editor .num{color:#f78c6c}.ide-editor .op{color:#89ddff}.ide-editor .var{color:#eeffff}
+.ide-terminal{border-top:1px solid var(--border);padding:.8rem 1rem;font-family:'JetBrains Mono',monospace;font-size:.75rem;color:var(--cyan);background:rgba(0,0,0,.2);min-height:60px}
+.terminal-line{opacity:0;animation:termType .3s ease-out forwards}.terminal-line:nth-child(1){animation-delay:1s}.terminal-line:nth-child(2){animation-delay:1.5s}.terminal-line:nth-child(3){animation-delay:2s}.terminal-line:nth-child(4){animation-delay:2.5s}
+@keyframes termType{0%{opacity:0;transform:translateX(-5px)}100%{opacity:1;transform:translateX(0)}}
+@keyframes fadeUp{0%{opacity:0;transform:translateY(30px)}100%{opacity:1;transform:translateY(0)}}
+section{padding:6rem 2rem;position:relative}
+.section-header{text-align:center;margin-bottom:4rem}.section-header .tag{display:inline-block;padding:.3rem .8rem;background:var(--glass2);border:1px solid var(--border);border-radius:100px;font-size:.75rem;color:var(--accent);font-weight:600;text-transform:uppercase;letter-spacing:1px;margin-bottom:1rem}
+.section-header h2{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-1px;margin-bottom:1rem}.section-header p{color:var(--text2);max-width:600px;margin:0 auto;font-size:1.05rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto}
+.feature-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:2rem;transition:all .4s;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(247,147,30,.05),transparent);opacity:0;transition:opacity .4s}
+.feature-card:hover{transform:translateY(-5px);border-color:var(--border2);box-shadow:var(--glow-cyan)}.feature-card:hover::before{opacity:1}
+.feature-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(247,147,30,.15),rgba(79,195,247,.1));margin-bottom:1.2rem;font-size:1.5rem}
+.feature-card h3{font-size:1.15rem;font-weight:700;margin-bottom:.6rem}.feature-card p{color:var(--text2);font-size:.9rem;line-height:1.6}
+.steps{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:2rem}
+.step{display:flex;gap:2rem;align-items:flex-start;opacity:0;transform:translateX(-30px);transition:all .6s cubic-bezier(.23,1,.32,1)}.step.visible{opacity:1;transform:translateX(0)}
+.step-num{min-width:60px;height:60px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;font-size:1.5rem;font-weight:800;flex-shrink:0}
+.step-content h3{font-size:1.2rem;font-weight:700;margin-bottom:.5rem}.step-content p{color:var(--text2);font-size:.95rem}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;max-width:1000px;margin:0 auto;text-align:center}
+.stat h3{font-size:clamp(2rem,4vw,3rem);font-weight:900;background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat p{color:var(--text2);font-size:.9rem;margin-top:.3rem}
+.pricing{max-width:800px;margin:0 auto}.pricing-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem}
+.price-card{background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:2.5rem;text-align:center;transition:all .4s;position:relative}
+.price-card.popular{border-color:var(--accent);box-shadow:var(--glow)}
+.price-card.popular::before{content:'FOR INSTITUTES';position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;padding:.3rem 1rem;border-radius:100px;font-size:.7rem;font-weight:700;letter-spacing:1px}
+.price-card h3{font-size:1.3rem;font-weight:700;margin-bottom:.5rem}.price-card .price{font-size:2.5rem;font-weight:900;margin:1rem 0}.price-card .price span{font-size:1rem;font-weight:400;color:var(--text2)}
+.price-card ul{list-style:none;text-align:left;margin:1.5rem 0}.price-card ul li{padding:.4rem 0;color:var(--text2);font-size:.9rem;display:flex;align-items:center;gap:.5rem}.price-card ul li::before{content:'✓';color:var(--accent);font-weight:700}
+.price-card .btn{width:100%;justify-content:center}
+.tech-grid{display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;max-width:800px;margin:0 auto}
+.tech-pill{padding:.5rem 1.2rem;background:var(--glass);border:1px solid var(--border);border-radius:100px;font-size:.85rem;color:var(--text2);transition:all .3s;display:flex;align-items:center;gap:.5rem}.tech-pill:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.cta{text-align:center;padding:8rem 2rem;position:relative;overflow:hidden}.cta-bg{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(247,147,30,.08) 0%,transparent 70%)}
+.cta h2{font-size:clamp(2rem,4vw,3.5rem);font-weight:900;letter-spacing:-1px;margin-bottom:1.5rem;position:relative}.cta p{color:var(--text2);margin-bottom:2rem;font-size:1.1rem;position:relative}
+footer{border-top:1px solid var(--border);padding:3rem 2rem;text-align:center}
+.footer-links{display:flex;gap:2rem;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap}.footer-links a{color:var(--text3);text-decoration:none;font-size:.85rem;transition:color .2s}.footer-links a:hover{color:var(--accent)}
+.footer-copy{color:var(--text3);font-size:.8rem}.footer-dev{margin-top:.8rem;color:var(--text3);font-size:.8rem}.footer-dev a{color:var(--cyan);text-decoration:none}.footer-dev a:hover{text-decoration:underline}
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0}.particle{position:absolute;width:2px;height:2px;background:var(--accent);border-radius:50%;opacity:0;animation:particleFloat linear infinite}
+@keyframes particleFloat{0%{opacity:0;transform:translateY(100vh) scale(0)}10%{opacity:.6}90%{opacity:.6}100%{opacity:0;transform:translateY(-10vh) scale(1)}}
+.reveal{opacity:0;transform:translateY(40px);transition:all .8s cubic-bezier(.23,1,.32,1)}.reveal.visible{opacity:1;transform:translateY(0)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:2000;display:none;align-items:center;justify-content:center;backdrop-filter:blur(8px)}
+.modal-overlay.active{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:2.5rem;max-width:500px;width:90%;text-align:center;position:relative;animation:modalIn .3s ease-out}
+@keyframes modalIn{0%{opacity:0;transform:scale(.9) translateY(20px)}100%{opacity:1;transform:scale(1) translateY(0)}}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--text3);font-size:1.5rem;cursor:pointer;transition:color .2s}.modal-close:hover{color:var(--text)}
+.modal-icon{width:64px;height:64px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1.5rem}
+.modal h3{font-size:1.3rem;font-weight:700;margin-bottom:.8rem}.modal p{color:var(--text2);font-size:.95rem;line-height:1.6;margin-bottom:1.5rem}
+.modal-steps{text-align:left;margin:1.5rem 0}.modal-steps div{display:flex;gap:.8rem;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.9rem;color:var(--text2)}.modal-steps div:last-child{border:none}
+.modal-steps .num{min-width:24px;height:24px;border-radius:50%;background:var(--accent);color:#000;display:flex;align-items:center;justify-content:center;font-size:.75rem;font-weight:700;flex-shrink:0}
+.modal .btn{margin-top:.5rem}
+@media(max-width:768px){.nav-links{display:none}.stats{grid-template-columns:repeat(2,1fr)}.pricing-cards{grid-template-columns:1fr}.ide-body{flex-direction:column}.ide-sidebar{flex-direction:row;width:100%;border-right:none;border-bottom:1px solid var(--border)}.step{flex-direction:column;gap:1rem}}
+</style>
+</head>
+<body>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="particles" id="particles"></div>
+
+<!-- Payment Modal -->
+<div class="modal-overlay" id="paymentModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-icon">⚡</div>
+    <h3>Get Flashforge IDE</h3>
+    <p>Flashforge IDE is <strong>completely free for every individual</strong>. Only institutions pay for multi-user management and admin features.</p>
+    <div class="modal-steps">
+      <div><span class="num">1</span><span><strong>Download</strong> the Flashforge IDE installer from this website</span></div>
+      <div><span class="num">2</span><span><strong>Install & Launch</strong> the IDE on your computer</span></div>
+      <div><span class="num">3</span><span><strong>Register</strong> as an Institution (Admin) from the login screen</span></div>
+      <div><span class="num">4</span><span><strong>Pay ₹5,000/month</strong> inside the IDE via Razorpay to activate institutional features</span></div>
+    </div>
+    <p style="font-size:.85rem;color:var(--text3);margin-top:1rem">Students & individual developers: Just download, install, and start coding. Configure your own Gemini/OpenAI API key for free. No payment needed!</p>
+    <a href="https://drive.google.com/uc?export=download&id=1EU-xtX_izxmYCN0dQmeF1Iotd0E_O3DA" class="btn btn-primary" onclick="closeModal()" style="width:100%;justify-content:center;margin-top:1rem">Download Flashforge IDE</a>
+  </div>
+</div>
+
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 512 512" fill="none"><rect x="16" y="16" width="480" height="480" rx="96" fill="#1a1a2e"/><path d="M160 160L100 256L160 352" stroke="#4fc3f7" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><path d="M352 160L412 256L352 352" stroke="#4fc3f7" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/><path d="M270 90L190 260H248L220 422L340 230H272Z" fill="#f7931e"/></svg>
+    <span>Flashforge <span class="ide">IDE</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How It Works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#tech">Tech Stack</a>
+    <a href="support.html">Support</a>
+    <a href="#download" class="nav-cta">Download IDE</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"><div class="hero-grid"></div><div class="hero-orb o1"></div><div class="hero-orb o2"></div><div class="hero-orb o3"></div></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> v1.0 — Now Available</div>
+    <h1>The <span class="gradient">AI-Powered</span><br>IDE for Education</h1>
+    <p>Flashforge IDE transforms VS Code into an intelligent educational platform with AI chat, assignment management, anti-cheat detection, and role-based dashboards.</p>
+    <div class="hero-btns">
+      <a href="https://drive.google.com/uc?export=download&id=1EU-xtX_izxmYCN0dQmeF1Iotd0E_O3DA" class="btn btn-primary">⚡ Download Flashforge IDE</a>
+      <a href="#features" class="btn btn-secondary">Explore Features →</a>
+    </div>
+    <div class="hero-3d">
+      <div class="ide-window">
+        <div class="ide-titlebar"><div class="ide-dot r"></div><div class="ide-dot y"></div><div class="ide-dot g"></div><span>flashforge-ide — main.py</span></div>
+        <div class="ide-body">
+          <div class="ide-sidebar"><div class="icon active"></div><div class="icon"></div><div class="icon"></div><div class="icon"></div><div class="icon"></div></div>
+          <div class="ide-editor">
+            <div class="line"><span class="ln">1</span><span><span class="kw">from</span> <span class="fn">flashforge</span> <span class="kw">import</span> <span class="var">AI</span>, <span class="var">Assignment</span></span></div>
+            <div class="line"><span class="ln">2</span><span></span></div>
+            <div class="line"><span class="ln">3</span><span><span class="kw">class</span> <span class="fn">StudentProject</span><span class="op">:</span></span></div>
+            <div class="line"><span class="ln">4</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">def</span> <span class="fn">__init__</span><span class="op">(</span><span class="var">self</span><span class="op">,</span> <span class="var">name</span><span class="op">):</span></span></div>
+            <div class="line"><span class="ln">5</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">self</span><span class="op">.</span><span class="var">name</span> <span class="op">=</span> <span class="var">name</span></span></div>
+            <div class="line"><span class="ln">6</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="var">self</span><span class="op">.</span><span class="var">ai</span> <span class="op">=</span> <span class="fn">AI</span><span class="op">(</span><span class="str">"flashforge"</span><span class="op">)</span></span></div>
+            <div class="line"><span class="ln">7</span><span></span></div>
+            <div class="line"><span class="ln">8</span><span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">def</span> <span class="fn">solve</span><span class="op">(</span><span class="var">self</span><span class="op">,</span> <span class="var">task</span><span class="op">):</span></span></div>
+            <div class="line"><span class="ln">9</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm"># AI assists in real-time</span></span></div>
+            <div class="line"><span class="ln">10</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="var">self</span><span class="op">.</span><span class="var">ai</span><span class="op">.</span><span class="fn">generate</span><span class="op">(</span><span class="var">task</span><span class="op">)</span></span></div>
+          </div>
+        </div>
+        <div class="ide-terminal">
+          <div class="terminal-line">$ flashforge run main.py</div>
+          <div class="terminal-line" style="color:#c3e88d">✓ Project compiled successfully</div>
+          <div class="terminal-line" style="color:#f7931e">⚡ AI: Generating solution... done</div>
+          <div class="terminal-line" style="color:#4fc3f7">→ Ready at http://localhost:3000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="stats reveal">
+    <div class="stat"><h3 id="stat1">0</h3><p>Lines of Custom Code</p></div>
+    <div class="stat"><h3 id="stat2">0</h3><p>AI-Powered Features</p></div>
+    <div class="stat"><h3 id="stat3">0</h3><p>Skills in Marketplace</p></div>
+    <div class="stat"><h3 id="stat4">0</h3><p>Roles Supported</p></div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="section-header reveal"><div class="tag">Features</div><h2>Everything an Educational IDE Needs</h2><p>Built from scratch on top of VS Code with 12 major feature categories, 80+ skills, and enterprise-grade security.</p></div>
+  <div class="features-grid">
+    <div class="feature-card reveal"><div class="feature-icon">🤖</div><h3>AI Chat Harness</h3><p>Full AI coding assistant with file operations, terminal access, code search, scaffolding, debugging, testing, and refactoring. Works offline with Ollama or online with Gemini/OpenAI.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🧠</div><h3>Models Marketplace</h3><p>Switch between Ollama (local), Google Gemini, and OpenAI GPT models. Real-time model status, usage stats, and benchmarking built in.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">⚡</div><h3>Skills Marketplace</h3><p>80+ pre-built skills across 8 categories: Code Generation, Debugging, Testing, DevOps, Database, Security, Documentation, and UI/UX.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">📊</div><h3>Role-Based Dashboards</h3><p>SuperAdmin, Admin, Faculty, and Student views. Each role gets a tailored dashboard with relevant tools, analytics, and controls.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">📝</div><h3>Assignment System</h3><p>Create assignments with test cases, required languages, deadlines. Students submit code, run against test cases, and get instant feedback with pass/fail results.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🛡️</div><h3>Anti-Cheat Detection</h3><p>AI watermark detection, copy-paste monitoring, behavioral analysis. CSV reports with full details exported after deadline.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🔄</div><h3>Flash Mode with Resume</h3><p>AI agent that persists progress across sessions via .reference folders. Progress tracking, phase management, and chat history restoration.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">💳</div><h3>Institutional Billing</h3><p>Razorpay-integrated payments for institutions. Students use the IDE completely free — only institutes pay ₹5,000/month for full feature access.</p></div>
+    <div class="feature-card reveal"><div class="feature-icon">🏗️</div><h3>Full VS Code Base</h3><p>Built on VS Code 1.96 — every native feature works. Extensions, themes, keybindings, debugging, Git integration — all included.</p></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="section-header reveal"><div class="tag">How It Works</div><h2>From Install to Productive in 60 Seconds</h2><p>Flashforge IDE is designed to be immediately familiar to VS Code users while adding powerful educational tools.</p></div>
+  <div class="steps">
+    <div class="step"><div class="step-num">1</div><div class="step-content"><h3>Install & Login</h3><p>Run the installer, launch Flashforge IDE, and log in with your institutional credentials. Role-based access automatically configures your dashboard.</p></div></div>
+    <div class="step"><div class="step-num">2</div><div class="step-content"><h3>Choose Your AI Model</h3><p>Select from local Ollama models (free, private), Google Gemini, or OpenAI GPT. The AI Chat harness is ready immediately.</p></div></div>
+    <div class="step"><div class="step-num">3</div><div class="step-content"><h3>Start Building</h3><p>Write code with AI assistance, browse 80+ skills, create or submit assignments, and track your progress with Flash Mode's persistent sessions.</p></div></div>
+    <div class="step"><div class="step-num">4</div><div class="step-content"><h3>Get Graded & Improve</h3><p>Faculty reviews submissions with anti-cheat reports, grades assignments, and students receive detailed feedback to improve.</p></div></div>
+  </div>
+</section>
+
+<section id="tech">
+  <div class="section-header reveal"><div class="tag">Built With</div><h2>Enterprise-Grade Tech Stack</h2><p>Every component is battle-tested and production-ready.</p></div>
+  <div class="tech-grid reveal">
+    <div class="tech-pill">⚡ VS Code 1.96</div><div class="tech-pill">🟢 Node.js</div><div class="tech-pill">🔷 TypeScript</div><div class="tech-pill">🟣 Express.js</div><div class="tech-pill">🐬 PostgreSQL</div><div class="tech-pill"> Prisma ORM</div><div class="tech-pill">▲ Vercel</div><div class="tech-pill">🔐 JWT + bcrypt</div><div class="tech-pill">💳 Razorpay</div><div class="tech-pill">🤖 Ollama</div><div class="tech-pill"> Gemini API</div><div class="tech-pill"> OpenAI API</div><div class="tech-pill">📦 Inno Setup</div><div class="tech-pill">🐳 conpty.dll</div><div class="tech-pill">🔒 Helmet.js</div><div class="tech-pill">📊 Prisma</div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="section-header reveal"><div class="tag">Pricing</div><h2>Free for Everyone. Paid for Institutes.</h2><p>Every individual gets full access for free. Institutions pay for multi-user management, faculty provisioning, and admin tools.</p></div>
+  <div class="pricing">
+    <div class="pricing-cards">
+      <div class="price-card reveal">
+        <h3>Free Plan</h3>
+        <div class="price">Free <span>/ forever</span></div>
+        <ul>
+          <li>Full AI Chat access</li>
+          <li>Free API key config (Gemini/OpenAI)</li>
+          <li>Local models via Ollama</li>
+          <li>80+ Skills Marketplace</li>
+          <li>Assignment submission & grading</li>
+          <li>Flash Mode with resume</li>
+          <li>Anti-cheat monitoring</li>
+          <li>All VS Code features</li>
+          <li>Community support</li>
+        </ul>
+        <a href="https://drive.google.com/uc?export=download&id=1EU-xtX_izxmYCN0dQmeF1Iotd0E_O3DA" class="btn btn-secondary">Download Free</a>
+      </div>
+      <div class="price-card popular reveal">
+        <h3>Institutional Plan</h3>
+        <div class="price">₹5,000 <span>/ month</span></div>
+        <ul>
+          <li>Everything in Free Plan</li>
+          <li>Multi-user role management</li>
+          <li>Faculty provisioning (CSV upload)</li>
+          <li>Assignment creation & test cases</li>
+          <li>Anti-cheat CSV report export</li>
+          <li>Subscription billing (Razorpay)</li>
+          <li>Institution dashboard & analytics</li>
+          <li>Priority support</li>
+        </ul>
+        <button class="btn btn-primary" onclick="openModal()">Get Institutional Access</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="download">
+  <div class="cta-bg"></div>
+  <h2 class="reveal">Ready to <span class="gradient">Forge</span> the Future?</h2>
+  <p class="reveal">Download Flashforge IDE today — free for students, powerful for institutions.</p>
+  <div class="hero-btns reveal" style="position:relative">
+    <a href="https://drive.google.com/uc?export=download&id=1EU-xtX_izxmYCN0dQmeF1Iotd0E_O3DA" class="btn btn-primary">⚡ Download for Windows</a>
+    <a href="docs.html" class="btn btn-secondary">View Documentation →</a>
+  </div>
+  <p class="reveal" style="margin-top:1.5rem;font-size:.85rem;color:var(--text3)">Windows 10/11 (64-bit) • 200 MB • v1.0.0</p>
+</section>
+
+<footer>
+  <div class="footer-links">
+    <a href="docs.html">Documentation</a>
+    <a href="https://github.com/userlol123321" target="_blank">GitHub</a>
+    <a href="support.html">Support</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Service</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 Flashforge. Built with ⚡ for education.</div>
+  <div class="footer-dev">Developed by <a href="https://github.com/userlol123321" target="_blank">userlol123321</a></div>
+</footer>
+
+<script>
+const glow=document.getElementById('cursorGlow');document.addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});
+const nav=document.getElementById('navbar');window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)});
+const particlesEl=document.getElementById('particles');function createParticles(){for(let i=0;i<30;i++){const p=document.createElement('div');p.className='particle';p.style.left=Math.random()*100+'%';p.style.animationDuration=(Math.random()*10+8)+'s';p.style.animationDelay=Math.random()*10+'s';p.style.width=p.style.height=(Math.random()*3+1)+'px';particlesEl.appendChild(p)}}createParticles();
+const reveals=document.querySelectorAll('.reveal, .step');const revealObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting)entry.target.classList.add('visible')})},{threshold:.1});reveals.forEach(el=>revealObserver.observe(el));
+function animateCounter(id,target,suffix=''){const el=document.getElementById(id);let current=0;const step=target/60;const timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer)}el.textContent=Math.floor(current).toLocaleString()+suffix},25)}
+const statsObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){animateCounter('stat1',50000,'+');animateCounter('stat2',12,'+');animateCounter('stat3',80,'+');animateCounter('stat4',4);statsObserver.disconnect()}})},{threshold:.3});statsObserver.observe(document.querySelector('.stats'));
+function openModal(){document.getElementById('paymentModal').classList.add('active')}
+function closeModal(){document.getElementById('paymentModal').classList.remove('active')}
+document.getElementById('paymentModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{e.preventDefault();const target=document.querySelector(a.getAttribute('href'));if(target)target.scrollIntoView({behavior:'smooth'})})});
+</script>
+</body>
+</html>
