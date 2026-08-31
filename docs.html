@@ -288,6 +288,15 @@ Internet:  Optional (required for online AI + billing)</code></pre>
 
     <!-- CHANGELOG -->
     <h2 id="changelog">Changelog</h2>
+    <div class="card" style="border-color:rgba(247,147,30,0.35);background:linear-gradient(135deg,rgba(247,147,30,0.08),rgba(79,195,247,0.06))">
+      <h4>v1.0.1 — Upcoming <span class="badge" style="background:linear-gradient(135deg,#4fc3f7,#7c4dff);color:#fff">UPCOMING</span></h4>
+      <ul>
+        <li><strong>Online NVIDIA API fix</strong> — Resolved 410/404 EOL errors for retired models; auto-fallback now queries <code>/v1/models</code> live catalog and retries with alive free-tier coding models, with clear hint on remaining available models.</li>
+        <li><strong>Master Control fix</strong> — Dashboard master controls now persist correctly across reloads and role switches; SuperAdmin/Admin toggles no longer reset on window reload.</li>
+        <li><strong>Multiple approval ask fix</strong> — Eliminated repeated permission/approval prompts; single confirmation per tool chain — file, terminal, and search tools execute without redundant approval dialogs in webview.</li>
+        <li><strong>Phase-based AI usage — Optimizing AI output</strong> — Phase-aware prompting via <code>.reference/phases.md</code> + <code>progress.md</code>; AI now scopes context per development phase, reduces token waste, and produces more accurate, incremental outputs.</li>
+      </ul>
+    </div>
     <div class="card">
       <h4>v1.0.0 — August 27, 2026</h4>
       <ul>
